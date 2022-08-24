@@ -22,7 +22,7 @@ class GxEPD2_420c : public GxEPD2_EPD
     static const uint16_t WIDTH = 400;
     static const uint16_t WIDTH_VISIBLE = WIDTH;
     static const uint16_t HEIGHT = 300;
-    static const GxEPD2::Panel panel = GxEPD2::GDEW042Z15;
+    static const GxEPD2::Panel panel = GxEPD2::GDEH042Z96;
     static const bool hasColor = true;
     static const bool hasPartialUpdate = true;
     static const bool usePartialUpdateWindow = false; // needs be false to work
