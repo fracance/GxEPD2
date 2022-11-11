@@ -54,23 +54,27 @@ void GxEPD2_EPD::init(uint32_t serial_diag_bitrate, bool initial, uint16_t reset
   }
   if (_cs >= 0)
   {
-    digitalWrite(_cs, HIGH);
     pinMode(_cs, OUTPUT);
+    digitalWrite(_cs, HIGH);
   }
   if (_dc >= 0)
   {
-    digitalWrite(_dc, HIGH);
     pinMode(_dc, OUTPUT);
+    digitalWrite(_dc, HIGH);
   }
   _reset();
   if (_busy >= 0)
   {
-    pinMode(_busy, INPUT);
+    pinMode(_busy, INPUT_PULLUP);
   }
   _pSPIx->begin();
   if (_busy == MISO) // may be overridden, to be verified
   {
-    pinMode(_busy, INPUT);
+    pinMode(_busy, INPUT_PULLUP);
+  }
+  if (_dc == MISO) // may be overridden, TTGO T5 V2.66
+  {
+    pinMode(_dc, OUTPUT);
   }
   if (_dc == MISO) // may be overridden, TTGO T5 V2.66
   {
@@ -96,16 +100,17 @@ void GxEPD2_EPD::_reset()
   {
     if (_pulldown_rst_mode)
     {
-      digitalWrite(_rst, LOW);
       pinMode(_rst, OUTPUT);
+      digitalWrite(_rst, LOW);
       delay(_reset_duration);
-      pinMode(_rst, INPUT_PULLUP);
+      // pinMode(_rst, INPUT_PULLUP);
+      digitalWrite(_rst, HIGH);
       delay(_reset_duration > 10 ? _reset_duration : 10);
     }
     else
     {
-      digitalWrite(_rst, HIGH); // NEEDED for Waveshare "clever" reset circuit, power controller before reset pulse
       pinMode(_rst, OUTPUT);
+      digitalWrite(_rst, HIGH); // NEEDED for Waveshare "clever" reset circuit, power controller before reset pulse
       delay(10); // NEEDED for Waveshare "clever" reset circuit, at least delay(2);
       digitalWrite(_rst, LOW);
       delay(_reset_duration);
